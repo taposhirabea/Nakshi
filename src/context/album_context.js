@@ -2,6 +2,8 @@ import axios from 'axios'
 import React, { useContext, useEffect, useReducer,useState } from 'react'
 import reducer from '../reducers/album_reducer'
 import { shops as url } from '../utils/data'
+import { useParams } from 'react-router-dom';
+import { Link} from 'react-router-dom'
 import {
   GET_PRODUCTS_BEGIN,
   GET_PRODUCTS_SUCCESS,
@@ -10,6 +12,7 @@ import {
   GET_SINGLE_PRODUCT_SUCCESS,
   GET_SINGLE_PRODUCT_ERROR,
 } from '../actions'
+import { useNavigate } from 'react-router-dom'
 
 const initialState = {
   products_loading: false,
@@ -24,13 +27,8 @@ const AlbumContext = React.createContext()
 
 export const AlbumsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const { productName } = useParams();
 
-
-  const handleProductClick = (productName) => {
-    const selectedShop = state.products.find((item) => item.productName === productName);
-    setSelectedProduct(selectedShop);
-  };
 
   const fetchProducts = async (url) => {
     dispatch({ type: GET_PRODUCTS_BEGIN });
@@ -48,6 +46,7 @@ export const AlbumsProvider = ({ children }) => {
 
   };
 
+  // const selectedProduct = state.products.find((product) => product.productName === productName);
  
   
   // const fetchSingleProduct = async (productId) => {
@@ -80,8 +79,6 @@ export const AlbumsProvider = ({ children }) => {
     <AlbumContext.Provider
       value={{
         ...state,
-        handleProductClick,
-        selectedProduct
       }}
     >
       {children}

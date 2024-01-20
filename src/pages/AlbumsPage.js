@@ -1,47 +1,73 @@
 import React,{useEffect, useState} from 'react'
 import styled from 'styled-components'
-import Albums from '../components/Albums'
-import { shops } from '../utils/data'
-import AlbumCategory from '../components/AlbumCategory'
+import { useAlbumContext } from '../context/album_context'
+import { useParams } from 'react-router-dom';
+import { FaSearch } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
+
 const AlbumsPage = () => {
-  const [ menItems, setMenItems ] = useState()
-  const [ womenItems, setWomenItems ] = useState()
-
-  const fetchProducts = async (shops) => {
-    try {
-      const response = await fetch(shops);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      setMenItems(data.filter((item) => item.category === "cushion"));
-      setWomenItems(data.filter((item) => item.category === "table"));
-
-    } catch (error) {
-      console.error('Error fetching data:', error.message);
-    }
-  };
-  
-  useEffect(() => {
-    fetchProducts(shops)
-
-}, [])
+const {products} = useAlbumContext();
+const { productName } = useParams();
+const selectedProduct = products.find((product) => product.productName === productName);
   return (
-    <main>
-      {/* <PageHero title='products' /> */}
+
       <Wrapper className='page'>
-        {/* <div className='section-center products'>
-            {menItems && <AlbumCategory name="Cushion" key="cushion" products={menItems}/>}
-            {womenItems && <AlbumCategory name="Table" key="table" products={womenItems}/>}
-        </div> */}
-        
+
+        {selectedProduct && (
+          <div className='products '>
+             {selectedProduct.productList.map((album) => (
+                <div key={album.productId} className='container'>
+                  <img src={album.productImage} alt="" className='singleProduct'/>
+                  <Link to={`/item/${selectedProduct.productName}/${selectedProduct.id}/${album.productId}`} className='link'>
+                    <FaSearch />
+                  </Link>
+                </div>
+              ))}
+            </div>
+        )}
       </Wrapper>
-    </main>
   )
 }
 
 const Wrapper = styled.div`
+.container {
+  position: relative;
+  background: var(--clr-white);
+  border-radius: var(--radius);
+}
+.singleProduct {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: var(--radius);
+  transition: var(--transition);
+}
+.container:hover .singleProduct {
+  opacity: 0.5;
+}
+.container:hover .link {
+  opacity: 1;
+}
+.link {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--clr-primary-5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  transition: var(--transition);
+  opacity: 0;
+  cursor: pointer;
+  svg {
+    font-size: 1.25rem;
+    color: var(--clr-white);
+  }
+}
   .products {
     display: grid;
     gap: 3rem 1.5rem;
@@ -49,7 +75,17 @@ const Wrapper = styled.div`
   }
   @media (min-width: 768px) {
     .products {
-      grid-template-columns: 200px 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+  }
+  @media (max-width: 767px) {
+    .products {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+  @media (max-width: 367px) {
+    .products {
+      grid-template-columns: 1fr;
     }
   }
 `

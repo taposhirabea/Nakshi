@@ -23,6 +23,7 @@ const HomePage = () => {
       <Contact /> */}
       <Albums />
       {/* <ItemView/> */}
+ 
     </main>
   )
 }

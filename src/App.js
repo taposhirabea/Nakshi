@@ -10,7 +10,6 @@ import SingleProduct from './pages/SingleProductPage';
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import useContentful from "./useContentful";
-import AuthorCard from "./components/AuthorCard";
 import Albums from './components/Albums';
 import { shops } from './utils/data';
 import AlbumCategory from './components/AlbumCategory';
@@ -49,7 +48,8 @@ function App() {
                   <Route path=":productName" element={<AlbumsPage />}/>
                 </Route>
           </Route> */}
-          <Route path="/item/:id" element={    <SingleProductPage />}/>
+          <Route path="/item/:productName/:id" element={<AlbumsPage />}/>
+          <Route path="/item/:productName/:id/:productId" element={<SingleProductPage />}/>
 
           
         </Routes>

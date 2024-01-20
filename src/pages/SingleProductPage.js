@@ -1,60 +1,75 @@
-import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React from 'react'
+import styled from 'styled-components'
 import { useAlbumContext } from '../context/album_context';
-import { shops as url } from '../utils/data';
-import Loading from '../components/Loading';
-import Error from '../components/Error'
-import ProductImages from '../components/ProductImages'
+import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
-import styled from 'styled-components';
+export default function SingleProductPage() {
+    const {products} = useAlbumContext()
+    const { productName, productId } = useParams();
 
-const SingleProductPage = () => {
-
-  const {selectedProduct} = useAlbumContext()
-
-  // useEffect(() => {
-  //   if (error) {
-  //     setTimeout(() => {
-  //       navigate('/');
-  //     }, 3000);
-  //   }
-
-  // }, [error]);
-
-  // if (loading) {
-  //   return <Loading />;
-  // }
-  // if (error) {
-  //   return <Error />;
-  // }
-
-  // const {
+    const selectedProduct = products.find(
+        (product) => product.productName === productName && product.id === productId
+      );
+    
+      // If the selected product is not found, you can handle it accordingly (e.g., show a message)
+      if (!selectedProduct) {
+        return <div>Product not found</div>;
+      }
+    
+      const price = selectedProduct.productList.length > 0
+      ? selectedProduct.productList[0].price
+      : null;
   
-  //   price,
-  //   productList
-  // } = product;
+      // Assuming productImage is available in the first item of productList
+      const productImage = selectedProduct.productList.length > 0
+        ? selectedProduct.productList[0].productImage
+        : null;
+
+        
 
   return (
-    <Wrapper>
-      {/* <PageHero title={name} product /> */}
+//     <Wrapper className='container'>
+// <div className='d-block'>
+//     {productImage && (
+//           <img src={productImage} alt={`Product ${selectedProduct.productName}`} className='singleProduct' />
+//         )}
+//   </div>
+//     <footer className='col-3'>
+//     <h2>Description: Handicraft by countryside women</h2>
+//         <p>Febric: Cotton</p>
+//     </footer>
+//   </Wrapper>
+<Wrapper>
       <div className='section section-center page'>
-
-      {selectedProduct && (
-        <div>
-          <h3>{selectedProduct.productName}</h3>
-          <ul>
-      {selectedProduct.productList.map((product) => (
-        <li key={product.productId}>{`Price: $${product.price}`}</li>
-      ))}
-    </ul>
+        <Link to='/' className='btn'>
+          back to products
+        </Link>
+        <div className='product-center'>
+        {/* {productImage && (
+          <img src={productImage} alt={`Product ${selectedProduct.productName}`} className='singleProduct' />
+        )}
+          <section className='content'>
+            <h2>{productName}</h2>
+          <h5 className='price'>Price: {price}TK</h5>
+            <p className='desc'> Handicrafts are unique and skillfully crafted items that are created by hand, often using traditional techniques passed down through generations. These handmade objects showcase the creativity, cultural heritage, and craftsmanship of artisans. Unlike mass-produced goods, handicrafts are characterized by their individuality, attention to detail, and the personal touch of the artisan.</p>
+         
+          </section> */}
         </div>
-      )}
       </div>
     </Wrapper>
-  );
-};
+  )
+}
 
 const Wrapper = styled.main`
+
+.singleProduct {
+    height: 600px;
+    width: 100%;
+    display: block;
+    border-radius: var(--radius);
+    object-fit: cover;
+  }
   .product-center {
     display: grid;
     gap: 4rem;
@@ -80,12 +95,11 @@ const Wrapper = styled.main`
   @media (min-width: 992px) {
     .product-center {
       grid-template-columns: 1fr 1fr;
-      align-items: center;
+    //   align-items: center;
+    justify-items: center;
     }
     .price {
       font-size: 1.25rem;
     }
   }
 `;
-
-export default SingleProductPage;
