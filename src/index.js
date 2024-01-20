@@ -5,15 +5,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ProductsProvider } from './context/products_context';
 import { FilterProvider } from './context/filter_context';
+import { AlbumsProvider } from './context/album_context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ProductsProvider>
+    <AlbumsProvider>
     <FilterProvider>
   <React.StrictMode>
     <App />
   </React.StrictMode>
   </FilterProvider>
+  </AlbumsProvider>
   </ProductsProvider>
 );
 

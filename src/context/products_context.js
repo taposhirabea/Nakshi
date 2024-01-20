@@ -49,6 +49,14 @@ export const ProductsProvider = ({ children }) => {
     } catch (error) {
       dispatch({ type: GET_PRODUCTS_ERROR });
     }
+    // try {
+    //   const response = await client.getEntries({
+    //     content_type: 'product', // Replace 'product' with your Content Type ID
+    //   });
+    //   dispatch({ type: GET_PRODUCTS_SUCCESS, payload: response.items });
+    // } catch (error) {
+    //   dispatch({ type: GET_PRODUCTS_ERROR });
+    // }
   };
   
   const fetchSingleProduct = async (url) => {
@@ -64,6 +72,15 @@ export const ProductsProvider = ({ children }) => {
     } catch (error) {
       dispatch({ type: GET_SINGLE_PRODUCT_ERROR });
     }
+    // try {
+    //   const response = await client.getEntries({
+    //     content_type: 'product',
+    //     'fields.slug': slug, // Assuming you have a 'slug' field in your content model
+    //   });
+    //   dispatch({ type: GET_SINGLE_PRODUCT_SUCCESS, payload: response.items[0] });
+    // } catch (error) {
+    //   dispatch({ type: GET_SINGLE_PRODUCT_ERROR });
+    // }
   };
   
   useEffect(() => {
